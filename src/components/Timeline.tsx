@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 
 import { setChronologyAndPersist, useChronology } from "@/lib/chronology";
@@ -31,41 +32,17 @@ function SodaCupFab() {
       href="https://buymeacoffee.com/samcolson4"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-5 right-5 z-50 flex h-[4.25rem] w-[4.25rem] items-center justify-center rounded-2xl border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[color-mix(in_oklab,var(--background)_88%,var(--foreground)_8%)] shadow-[0_10px_40px_-10px_color-mix(in_oklab,var(--foreground)_45%,transparent)] backdrop-blur-md transition hover:scale-105 hover:shadow-[0_14px_44px_-12px_color-mix(in_oklab,var(--foreground)_55%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/45 dark:focus-visible:ring-blue-400/45"
+      className="fixed bottom-5 right-5 z-50 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-2xl border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[color-mix(in_oklab,var(--background)_88%,var(--foreground)_8%)] p-1.5 shadow-[0_10px_40px_-10px_color-mix(in_oklab,var(--foreground)_45%,transparent)] backdrop-blur-md transition hover:scale-105 hover:shadow-[0_14px_44px_-12px_color-mix(in_oklab,var(--foreground)_55%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/45 dark:focus-visible:ring-blue-400/45"
       aria-label="Buy me a coffee"
     >
-      <svg
-        className="h-11 w-11"
-        viewBox="0 0 48 56"
-        fill="none"
-        aria-hidden
-      >
-        <path
-          d="M30.5 3c.8 0 1.5.6 1.5 1.4l-.2 6.2-1.8 18.4a1 1 0 0 1-2-.2l1.8-17.8v-6.3c0-.4-.3-.7-.7-.7h-2a.7.7 0 0 0-.7.7v5.5L25.2 41a1 1 0 1 1-2-.3l2.4-18.3V8.3c0-1.2 1-2.2 2.2-2.2h3.2Z"
-          className="fill-amber-800 dark:fill-amber-200"
-        />
-        <path
-          d="M11 21h26v2.2a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V21Z"
-          className="fill-neutral-300 dark:fill-neutral-500"
-        />
-        <path
-          d="M13.2 26.5h21.6l2.8 25.2a2.4 2.4 0 0 1-2.4 2.7H13a2.4 2.4 0 0 1-2.4-2.7l2.6-25.2Z"
-          className="fill-red-500 dark:fill-red-400"
-        />
-        <path
-          d="M14.5 30h19"
-          className="stroke-red-900/25 dark:stroke-red-950/40"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <ellipse
-          cx="24"
-          cy="52.5"
-          rx="9"
-          ry="2.2"
-          className="fill-red-700 dark:fill-red-600"
-        />
-      </svg>
+      <Image
+        src="/soda-cup.png"
+        alt=""
+        width={96}
+        height={96}
+        className="h-full w-full object-contain"
+        sizes="84px"
+      />
     </a>
   );
 }
