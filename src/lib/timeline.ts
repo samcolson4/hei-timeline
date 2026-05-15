@@ -16,7 +16,7 @@ export type YearGroup = { year: number; items: TimelineItem[] };
 
 export function groupByYear(
   items: TimelineItem[],
-  order: ChronologicalOrder = "newest",
+  order: ChronologicalOrder = "oldest",
 ): YearGroup[] {
   const map = new Map<number, TimelineItem[]>();
   for (const item of items) {

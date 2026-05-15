@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 
 import { setChronologyAndPersist, useChronology } from "@/lib/chronology";
+import { useWatchedIds } from "@/lib/watched";
 import { decodeHtmlEntities } from "@/lib/htmlEntities";
 import { groupByYear } from "@/lib/timeline";
 import type { TimelineItem } from "@/lib/types";
@@ -19,6 +20,7 @@ import {
   type ShowTypeFilterId,
 } from "@/lib/filters";
 
+import { NextUpSection } from "./NextUpSection";
 import { TimelineItemRow } from "./TimelineItem";
 import { YearHeader } from "./YearHeader";
 
@@ -58,6 +60,7 @@ export function Timeline({ items }: TimelineProps) {
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<ShowTypeFilterId>("all");
   const chronology = useChronology();
+  const watchedIds = useWatchedIds();
 
   const filtered = useMemo(() => {
     const byType = items.filter((item) => matchesShowType(item, typeFilter));
@@ -129,6 +132,7 @@ export function Timeline({ items }: TimelineProps) {
             </a>
             .
           </p>
+          <NextUpSection items={items} />
           <div className="space-y-2 pt-1">
             <span className="block text-sm font-medium text-[color-mix(in_oklab,var(--foreground)_65%,transparent)]">
               Order
@@ -289,6 +293,7 @@ export function Timeline({ items }: TimelineProps) {
                       <TimelineItemRow
                         key={k}
                         item={item}
+                        watched={watchedIds.has(item.id)}
                         scrollAnchorId={scrollAnchorId}
                       />
                     );

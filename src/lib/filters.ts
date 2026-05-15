@@ -63,7 +63,7 @@ export function matchesShowType(
 
 export function collectYears(
   items: TimelineItem[],
-  order: ChronologicalOrder = "newest",
+  order: ChronologicalOrder = "oldest",
 ): number[] {
   const set = new Set<number>();
   for (const item of items) {
@@ -77,7 +77,7 @@ export function collectYears(
 
 export function collectSeasons(
   items: TimelineItem[],
-  order: ChronologicalOrder = "newest",
+  order: ChronologicalOrder = "oldest",
 ): number[] {
   const set = new Set<number>();
   for (const item of items) {

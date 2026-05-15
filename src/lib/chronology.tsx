@@ -10,14 +10,14 @@ export const CHRONOLOGY_STORAGE_KEY = "hei-timeline-chronological-order";
 const CHRONOLOGY_LOCAL_EVENT = "hei-timeline-chronology-local";
 
 export function readStoredChronology(): ChronologicalOrder {
-  if (typeof window === "undefined") return "newest";
+  if (typeof window === "undefined") return "oldest";
   try {
     const v = window.localStorage.getItem(CHRONOLOGY_STORAGE_KEY);
     if (v === "oldest" || v === "newest") return v;
   } catch {
     /* private mode / quota */
   }
-  return "newest";
+  return "oldest";
 }
 
 function persistChronology(order: ChronologicalOrder) {
@@ -47,7 +47,7 @@ function notifyChronologyChanged() {
 }
 
 function getChronologyServerSnapshot(): ChronologicalOrder {
-  return "newest";
+  return "oldest";
 }
 
 export function setChronologyAndPersist(next: ChronologicalOrder) {

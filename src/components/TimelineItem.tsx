@@ -1,9 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
 import { displayTitle, episodeBadgeParts } from "@/lib/filters";
 import { formatDisplayDate } from "@/lib/timeline";
 import type { TimelineItem } from "@/lib/types";
+
+import { WatchedToggle } from "./WatchedToggle";
 
 function ExternalIcon({ className }: { className?: string }) {
   return (
@@ -30,16 +34,23 @@ function ExternalIcon({ className }: { className?: string }) {
 
 type TimelineItemRowProps = {
   item: TimelineItem;
+  watched: boolean;
   /** Present on the first visible row for this season (for in-page jump links). */
   scrollAnchorId?: string;
 };
 
-export function TimelineItemRow({ item, scrollAnchorId }: TimelineItemRowProps) {
+export function TimelineItemRow({
+  item,
+  watched,
+  scrollAnchorId,
+}: TimelineItemRowProps) {
   const badgeParts = episodeBadgeParts(item);
   const title = displayTitle(item);
 
   const article = (
-    <article className="group relative grid gap-4 border-b border-[color-mix(in_oklab,var(--foreground)_8%,transparent)] py-8 sm:grid-cols-[7.5rem_1fr] sm:gap-8">
+    <article
+      className={`group relative grid gap-4 border-b border-[color-mix(in_oklab,var(--foreground)_8%,transparent)] py-8 sm:grid-cols-[7.5rem_1fr] sm:gap-8 ${watched ? "opacity-60" : ""}`}
+    >
       <div className="relative mx-auto flex w-full max-w-[7.5rem] shrink-0 justify-center sm:mx-0">
         {item.poster_url ? (
           <Link
@@ -66,13 +77,14 @@ export function TimelineItemRow({ item, scrollAnchorId }: TimelineItemRowProps) 
         )}
       </div>
       <div className="min-w-0 space-y-2">
-        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
           <time
             dateTime={item.air_date}
             className="text-sm text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]"
           >
             {formatDisplayDate(item.air_date)}
           </time>
+          <WatchedToggle itemId={item.id} watched={watched} />
         </div>
         <h3 className="text-xl font-semibold leading-snug tracking-tight text-balance sm:text-2xl">
           <Link

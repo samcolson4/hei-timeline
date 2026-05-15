@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import timelinePayload from "@data/timeline.json";
 
 import { EpisodePrevNext } from "@/components/EpisodePrevNext";
+import { EpisodeWatchedBar } from "@/components/EpisodeWatchedBar";
 import { displayTitle, episodeBadgeParts } from "@/lib/filters";
 import { formatDisplayDate, readTimeline } from "@/lib/timeline";
 import type { TimelinePayload } from "@/lib/types";
@@ -121,6 +122,10 @@ export default async function EpisodePage({
               Runtime: {runtimeLabel}
             </p>
           ) : null}
+
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <EpisodeWatchedBar episodeId={episode.id} />
+          </div>
 
           <div className="pt-2">
             <a
