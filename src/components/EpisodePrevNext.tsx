@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { useMemo } from "react";
 
-import { useChronology } from "@/lib/chronology";
 import { displayTitle } from "@/lib/filters";
 import {
   orderedItemsForNavigation,
   resolveEpisodeNeighbors,
 } from "@/lib/episodeNav";
 import type { TimelineItem } from "@/lib/types";
+
+/** Prev/next always follow air-date order (older ← current → newer), independent of the timeline’s Newest/Oldest display sort. */
+const NAV_ORDER = "oldest" as const;
 
 const navBtn =
   "inline-flex min-h-11 min-w-[8rem] items-center justify-center rounded-lg border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[color-mix(in_oklab,var(--foreground)_4%,transparent)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition hover:border-blue-600/40 hover:bg-blue-600/10 dark:hover:border-blue-400/35 dark:hover:bg-blue-400/10";
@@ -22,11 +24,10 @@ type EpisodePrevNextProps = {
 };
 
 export function EpisodePrevNext({ currentId, items }: EpisodePrevNextProps) {
-  const chronology = useChronology();
   const { prev, next } = useMemo(() => {
-    const ordered = orderedItemsForNavigation(items, chronology);
+    const ordered = orderedItemsForNavigation(items, NAV_ORDER);
     return resolveEpisodeNeighbors(ordered, currentId);
-  }, [items, chronology, currentId]);
+  }, [items, currentId]);
 
   return (
     <nav

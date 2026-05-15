@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
-import { displayTitle } from "@/lib/filters";
+import { displayTitle, episodeBadgeParts } from "@/lib/filters";
 import { formatDisplayDate } from "@/lib/timeline";
 import type { TimelineItem } from "@/lib/types";
 import { nextUnwatchedItem, useWatchedIds } from "@/lib/watched";
@@ -72,6 +72,7 @@ export function NextUpSection({ items }: NextUpSectionProps) {
   if (next == null) return null;
 
   const title = displayTitle(next);
+  const badgeParts = episodeBadgeParts(next);
   const watched = watchedIds.has(next.id);
 
   return (
@@ -82,40 +83,43 @@ export function NextUpSection({ items }: NextUpSectionProps) {
       <h2 className="mb-4 text-lg font-semibold text-[var(--foreground)]">
         Next up
       </h2>
-      <div className="grid gap-6 sm:grid-cols-[minmax(0,10rem)_1fr] sm:gap-8">
-        <div className="mx-auto w-full max-w-[10rem] sm:mx-0">
+      <div className="grid gap-6 sm:grid-cols-[7.5rem_1fr] sm:gap-8">
+        <div className="relative mx-auto flex w-full max-w-[7.5rem] shrink-0 justify-center sm:mx-0">
           {next.poster_url ? (
             <Link
               href={`/episode/${next.id}`}
-              className="block overflow-hidden rounded-xl bg-black/5 ring-1 ring-black/10 transition hover:ring-[color-mix(in_oklab,var(--foreground)_22%,transparent)] dark:bg-white/5 dark:ring-white/10"
+              className="block overflow-hidden rounded-lg bg-black/5 ring-1 ring-black/10 transition hover:ring-[color-mix(in_oklab,var(--foreground)_22%,transparent)] dark:bg-white/5 dark:ring-white/10"
             >
               <Image
                 src={next.poster_url}
                 alt=""
-                width={160}
-                height={240}
+                width={120}
+                height={180}
                 className="aspect-[2/3] h-auto w-full object-cover"
-                sizes="160px"
+                sizes="120px"
                 unoptimized
               />
             </Link>
           ) : (
             <Link
               href={`/episode/${next.id}`}
-              className="flex aspect-[2/3] w-full items-center justify-center rounded-xl bg-[color-mix(in_oklab,var(--foreground)_6%,transparent)] text-sm text-[color-mix(in_oklab,var(--foreground)_45%,transparent)]"
+              className="flex aspect-[2/3] w-full items-center justify-center rounded-lg bg-[color-mix(in_oklab,var(--foreground)_6%,transparent)] text-xs text-[color-mix(in_oklab,var(--foreground)_45%,transparent)] transition"
             >
               No art
             </Link>
           )}
         </div>
-        <div className="flex min-w-0 flex-col justify-center space-y-3">
-          <time
-            dateTime={next.air_date}
-            className="text-sm text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]"
-          >
-            {formatDisplayDate(next.air_date)}
-          </time>
-          <h3 className="text-2xl font-semibold leading-snug tracking-tight text-balance sm:text-3xl">
+        <div className="min-w-0 space-y-2 sm:justify-center sm:self-center">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <time
+              dateTime={next.air_date}
+              className="text-sm text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]"
+            >
+              {formatDisplayDate(next.air_date)}
+            </time>
+            <WatchedToggle itemId={next.id} watched={watched} />
+          </div>
+          <h3 className="text-xl font-semibold leading-snug tracking-tight text-balance sm:text-2xl">
             <Link
               href={`/episode/${next.id}`}
               className="text-[var(--foreground)] underline-offset-4 transition hover:text-blue-600 hover:underline dark:hover:text-blue-400"
@@ -123,9 +127,6 @@ export function NextUpSection({ items }: NextUpSectionProps) {
               {title}
             </Link>
           </h3>
-          <div className="flex flex-wrap items-center gap-2">
-            <WatchedToggle itemId={next.id} watched={watched} />
-          </div>
           <p className="text-sm">
             <a
               href={next.url}
@@ -137,6 +138,11 @@ export function NextUpSection({ items }: NextUpSectionProps) {
               <ExternalIcon className="h-3.5 w-3.5 shrink-0 opacity-80" />
             </a>
           </p>
+          {badgeParts.length > 0 ? (
+            <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_58%,transparent)]">
+              {badgeParts.join(" · ")}
+            </p>
+          ) : null}
         </div>
       </div>
     </section>
