@@ -4,6 +4,17 @@ import { useMemo, useState } from "react";
 
 import { groupByYear } from "@/lib/timeline";
 import type { TimelineItem } from "@/lib/types";
+import {
+  SHOW_TYPE_OPTIONS,
+  collectSeasons,
+  collectYears,
+  effectiveSeasonNumber,
+  firstItemKeyPerSeason,
+  itemKey,
+  matchesShowType,
+  scrollToElementId,
+  type ShowTypeFilterId,
+} from "@/lib/filters";
 
 import { TimelineItemRow } from "./TimelineItem";
 import { YearHeader } from "./YearHeader";
@@ -22,13 +33,22 @@ function formatGeneratedAt(iso: string): string {
   }).format(d);
 }
 
+const pillBase =
+  "shrink-0 rounded-full border px-3 py-1.5 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/40 dark:focus-visible:ring-blue-400/40";
+const pillIdle =
+  "border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[color-mix(in_oklab,var(--foreground)_4%,transparent)] text-[var(--foreground)] hover:border-blue-600/35 hover:bg-blue-600/10 dark:hover:border-blue-400/30 dark:hover:bg-blue-400/10";
+const pillActive =
+  "border-blue-600/60 bg-blue-600/15 text-blue-700 dark:border-blue-400/50 dark:bg-blue-400/15 dark:text-blue-200";
+
 export function Timeline({ items, generatedAt }: TimelineProps) {
   const [query, setQuery] = useState("");
+  const [typeFilter, setTypeFilter] = useState<ShowTypeFilterId>("all");
 
   const filtered = useMemo(() => {
+    const byType = items.filter((item) => matchesShowType(item, typeFilter));
     const q = query.trim().toLowerCase();
-    if (!q) return items;
-    return items.filter((item) => {
+    if (!q) return byType;
+    return byType.filter((item) => {
       const hay = [
         item.title,
         item.season_name ?? "",
@@ -39,9 +59,34 @@ export function Timeline({ items, generatedAt }: TimelineProps) {
         .toLowerCase();
       return hay.includes(q);
     });
-  }, [items, query]);
+  }, [items, query, typeFilter]);
 
   const yearGroups = useMemo(() => groupByYear(filtered), [filtered]);
+
+  const flatDisplayOrder = useMemo(
+    () => yearGroups.flatMap((g) => g.items),
+    [yearGroups],
+  );
+
+  const firstKeyForSeason = useMemo(
+    () => firstItemKeyPerSeason(flatDisplayOrder),
+    [flatDisplayOrder],
+  );
+
+  const years = useMemo(() => collectYears(filtered), [filtered]);
+  const seasons = useMemo(() => collectSeasons(filtered), [filtered]);
+
+  const hasUnknownYear = yearGroups.some((g) => g.year === 0);
+
+  function jumpToYear(year: number) {
+    const id =
+      year === 0 ? "year-unknown-heading" : `year-${year}-heading`;
+    scrollToElementId(id);
+  }
+
+  function jumpToSeason(seasonNum: number) {
+    scrollToElementId(`season-jump-${seasonNum}`);
+  }
 
   return (
     <div className="w-full">
@@ -67,9 +112,94 @@ export function Timeline({ items, generatedAt }: TimelineProps) {
             Data last updated: {formatGeneratedAt(generatedAt)}
           </p>
         </div>
+
+        <div className="space-y-2">
+          <span className="block text-sm font-medium text-[color-mix(in_oklab,var(--foreground)_65%,transparent)]">
+            Show type
+          </span>
+          <div
+            className="-mx-1 flex flex-wrap gap-2 px-1"
+            role="group"
+            aria-label="Filter by show type"
+          >
+            {SHOW_TYPE_OPTIONS.map(({ id, label }) => {
+              const on = typeFilter === id;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  className={`${pillBase} ${on ? pillActive : pillIdle}`}
+                  aria-pressed={on}
+                  onClick={() => setTypeFilter(id)}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <nav
+          className="space-y-2"
+          aria-label="Jump to year"
+        >
+          <span className="block text-sm font-medium text-[color-mix(in_oklab,var(--foreground)_65%,transparent)]">
+            Jump to year
+          </span>
+          <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {years.map((y) => (
+              <button
+                key={y}
+                type="button"
+                className={`${pillBase} ${pillIdle}`}
+                onClick={() => jumpToYear(y)}
+              >
+                {y}
+              </button>
+            ))}
+            {hasUnknownYear ? (
+              <button
+                type="button"
+                className={`${pillBase} ${pillIdle}`}
+                onClick={() => jumpToYear(0)}
+              >
+                Unknown date
+              </button>
+            ) : null}
+          </div>
+        </nav>
+
+        <nav
+          className="space-y-2"
+          aria-label="Jump to On Cinema season"
+        >
+          <span className="block text-sm font-medium text-[color-mix(in_oklab,var(--foreground)_65%,transparent)]">
+            Jump to season
+          </span>
+          {seasons.length === 0 ? (
+            <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_48%,transparent)]">
+              No numbered seasons in the current results (try &ldquo;On
+              Cinema&rdquo; or clear filters).
+            </p>
+          ) : (
+            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {seasons.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`${pillBase} ${pillIdle}`}
+                  onClick={() => jumpToSeason(s)}
+                >
+                  Season {s}
+                </button>
+              ))}
+            </div>
+          )}
+        </nav>
+
         <label className="block max-w-xl">
           <span className="mb-2 block text-sm font-medium text-[color-mix(in_oklab,var(--foreground)_65%,transparent)]">
-            Filter
+            Search
           </span>
           <input
             type="search"
@@ -88,7 +218,8 @@ export function Timeline({ items, generatedAt }: TimelineProps) {
 
       {yearGroups.length === 0 ? (
         <p className="py-16 text-center text-[color-mix(in_oklab,var(--foreground)_55%,transparent)]">
-          No matches for &ldquo;{query}&rdquo;.
+          No matches for this combination of filters
+          {query ? ` and “${query}”` : ""}.
         </p>
       ) : (
         <div className="space-y-2">
@@ -99,12 +230,21 @@ export function Timeline({ items, generatedAt }: TimelineProps) {
               <section key={year} aria-labelledby={headingId}>
                 <YearHeader year={year} />
                 <div className="divide-y divide-transparent">
-                  {groupItems.map((item) => (
-                    <TimelineItemRow
-                      key={`${item.id}-${item.slug}`}
-                      item={item}
-                    />
-                  ))}
+                  {groupItems.map((item) => {
+                    const sn = effectiveSeasonNumber(item);
+                    const k = itemKey(item);
+                    const scrollAnchorId =
+                      sn != null && firstKeyForSeason.get(sn) === k
+                        ? `season-jump-${sn}`
+                        : undefined;
+                    return (
+                      <TimelineItemRow
+                        key={k}
+                        item={item}
+                        scrollAnchorId={scrollAnchorId}
+                      />
+                    );
+                  })}
                 </div>
               </section>
             );

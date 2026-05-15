@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { formatDisplayDate } from "@/lib/timeline";
+import { effectiveSeasonNumber } from "@/lib/filters";
 import type { TimelineItem } from "@/lib/types";
 
 function ExternalIcon({ className }: { className?: string }) {
@@ -26,15 +27,23 @@ function ExternalIcon({ className }: { className?: string }) {
   );
 }
 
-type TimelineItemRowProps = { item: TimelineItem };
+type TimelineItemRowProps = {
+  item: TimelineItem;
+  /** Present on the first visible row for this season (for in-page jump links). */
+  scrollAnchorId?: string;
+};
 
-export function TimelineItemRow({ item }: TimelineItemRowProps) {
+export function TimelineItemRow({ item, scrollAnchorId }: TimelineItemRowProps) {
   const badgeParts: string[] = [];
   if (item.season_name) badgeParts.push(item.season_name);
+  else {
+    const sn = effectiveSeasonNumber(item);
+    if (sn != null) badgeParts.push(`Season ${sn}`);
+  }
   if (item.category) badgeParts.push(item.category.replace(/-/g, " "));
   if (item.is_live) badgeParts.push("Live");
 
-  return (
+  const article = (
     <article className="group relative grid gap-4 border-b border-[color-mix(in_oklab,var(--foreground)_8%,transparent)] py-8 sm:grid-cols-[7.5rem_1fr] sm:gap-8">
       <div className="relative mx-auto flex w-full max-w-[7.5rem] shrink-0 justify-center sm:mx-0">
         {item.poster_url ? (
@@ -93,4 +102,14 @@ export function TimelineItemRow({ item }: TimelineItemRowProps) {
       </div>
     </article>
   );
+
+  if (scrollAnchorId) {
+    return (
+      <div id={scrollAnchorId} className="scroll-mt-24">
+        {article}
+      </div>
+    );
+  }
+
+  return article;
 }

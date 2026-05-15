@@ -1,0 +1,99 @@
+import type { TimelineItem } from "./types";
+
+export type ShowTypeFilterId =
+  | "all"
+  | "on-cinema"
+  | "decker"
+  | "live"
+  | "more"
+  | "other";
+
+export const SHOW_TYPE_OPTIONS: { id: ShowTypeFilterId; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "on-cinema", label: "On Cinema" },
+  { id: "decker", label: "Decker" },
+  { id: "live", label: "Live" },
+  { id: "more", label: "More" },
+  { id: "other", label: "Other" },
+];
+
+const SEASON_IN_URL = /\/season-(\d+)\//i;
+
+/** Season number from API or parsed from OCATC-style URLs (`/season-16/...`). */
+export function effectiveSeasonNumber(item: TimelineItem): number | null {
+  if (item.season_number != null) return item.season_number;
+  const m = SEASON_IN_URL.exec(item.url);
+  if (m) return parseInt(m[1], 10);
+  return null;
+}
+
+export function itemKey(item: TimelineItem): string {
+  return `${item.id}-${item.slug}`;
+}
+
+export function matchesShowType(
+  item: TimelineItem,
+  filterId: ShowTypeFilterId,
+): boolean {
+  if (filterId === "all") return true;
+  const c = item.category ?? "";
+  switch (filterId) {
+    case "on-cinema":
+      return c === "on-cinema-at-the-cinema" || c === "oscar-specials";
+    case "decker":
+      return c === "decker";
+    case "live":
+      return c === "live";
+    case "more":
+      return c === "more";
+    case "other":
+      return (
+        c !== "on-cinema-at-the-cinema" &&
+        c !== "oscar-specials" &&
+        c !== "decker" &&
+        c !== "live" &&
+        c !== "more"
+      );
+    default:
+      return true;
+  }
+}
+
+export function collectYears(items: TimelineItem[]): number[] {
+  const set = new Set<number>();
+  for (const item of items) {
+    const y = parseInt(item.air_date.slice(0, 4), 10);
+    if (Number.isFinite(y)) set.add(y);
+  }
+  return [...set].sort((a, b) => b - a);
+}
+
+export function collectSeasons(items: TimelineItem[]): number[] {
+  const set = new Set<number>();
+  for (const item of items) {
+    const n = effectiveSeasonNumber(item);
+    if (n != null) set.add(n);
+  }
+  return [...set].sort((a, b) => b - a);
+}
+
+export function firstItemKeyPerSeason(
+  itemsInOrder: TimelineItem[],
+): Map<number, string> {
+  const seen = new Set<number>();
+  const map = new Map<number, string>();
+  for (const item of itemsInOrder) {
+    const n = effectiveSeasonNumber(item);
+    if (n == null) continue;
+    if (seen.has(n)) continue;
+    seen.add(n);
+    map.set(n, itemKey(item));
+  }
+  return map;
+}
+
+export function scrollToElementId(id: string): void {
+  if (typeof document === "undefined") return;
+  const el = document.getElementById(id);
+  el?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
