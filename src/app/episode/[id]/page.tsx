@@ -6,8 +6,7 @@ import type { Metadata } from "next";
 import timelinePayload from "@data/timeline.json";
 
 import { EpisodePrevNext } from "@/components/EpisodePrevNext";
-import { episodeBadgeParts } from "@/lib/filters";
-import { decodeHtmlEntities } from "@/lib/htmlEntities";
+import { displayTitle, episodeBadgeParts } from "@/lib/filters";
 import { formatDisplayDate, readTimeline } from "@/lib/timeline";
 import type { TimelinePayload } from "@/lib/types";
 
@@ -32,7 +31,7 @@ export async function generateMetadata({
     return { title: "Not found" };
   }
   return {
-    title: `${decodeHtmlEntities(episode.title)} · HEI Timeline`,
+    title: `${displayTitle(episode)} · HEI Timeline`,
     description: `Air date ${episode.air_date}. Watch on HEI Network.`,
   };
 }
@@ -67,7 +66,7 @@ export default async function EpisodePage({
 
   const badges = episodeBadgeParts(episode);
   const runtimeLabel = formatRuntimeSeconds(episode.length);
-  const title = decodeHtmlEntities(episode.title);
+  const title = displayTitle(episode);
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-3xl px-4 py-12 sm:px-6 lg:max-w-4xl lg:px-8">

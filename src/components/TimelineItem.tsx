@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { episodeBadgeParts } from "@/lib/filters";
-import { decodeHtmlEntities } from "@/lib/htmlEntities";
+import { displayTitle, episodeBadgeParts } from "@/lib/filters";
 import { formatDisplayDate } from "@/lib/timeline";
 import type { TimelineItem } from "@/lib/types";
 
@@ -37,7 +36,7 @@ type TimelineItemRowProps = {
 
 export function TimelineItemRow({ item, scrollAnchorId }: TimelineItemRowProps) {
   const badgeParts = episodeBadgeParts(item);
-  const title = decodeHtmlEntities(item.title);
+  const title = displayTitle(item);
 
   const article = (
     <article className="group relative grid gap-4 border-b border-[color-mix(in_oklab,var(--foreground)_8%,transparent)] py-8 sm:grid-cols-[7.5rem_1fr] sm:gap-8">

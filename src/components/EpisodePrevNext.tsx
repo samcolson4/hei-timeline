@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 import { useChronology } from "@/lib/chronology";
-import { decodeHtmlEntities } from "@/lib/htmlEntities";
+import { displayTitle } from "@/lib/filters";
 import {
   orderedItemsForNavigation,
   resolveEpisodeNeighbors,
@@ -38,7 +38,7 @@ export function EpisodePrevNext({ currentId, items }: EpisodePrevNextProps) {
           <Link href={`/episode/${prev.id}`} className={navBtn}>
             ← Previous
             <span className="sr-only">
-              : {decodeHtmlEntities(prev.title)}
+              : {displayTitle(prev)}
             </span>
           </Link>
         ) : (
@@ -50,7 +50,7 @@ export function EpisodePrevNext({ currentId, items }: EpisodePrevNextProps) {
           <Link href={`/episode/${next.id}`} className={navBtn}>
             Next →
             <span className="sr-only">
-              : {decodeHtmlEntities(next.title)}
+              : {displayTitle(next)}
             </span>
           </Link>
         ) : (

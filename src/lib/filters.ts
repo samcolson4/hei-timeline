@@ -1,3 +1,4 @@
+import { decodeHtmlEntities } from "./htmlEntities";
 import type { ChronologicalOrder } from "./timeline";
 import type { TimelineItem } from "./types";
 
@@ -88,6 +89,43 @@ export function collectSeasons(
   return arr;
 }
 
+/**
+ * On Cinema At The Cinema episodes embed `SSEE` (or `SEE` for single-digit
+ * seasons) as a numeric prefix in the title, e.g. "1610 'Hamnet'…" =
+ * S16E10. Returns the parsed episode number and the title with that prefix
+ * stripped, or null when the title doesn't follow the convention.
+ */
+export function parseOnCinemaPrefix(
+  item: TimelineItem,
+): { episodeNumber: number; cleanedTitle: string } | null {
+  if (item.category !== "on-cinema-at-the-cinema") return null;
+  const seasonNumber = effectiveSeasonNumber(item);
+  if (seasonNumber == null) return null;
+  const decoded = decodeHtmlEntities(item.title);
+  const re = new RegExp(`^${seasonNumber}(\\d{2})\\s+`);
+  const m = re.exec(decoded);
+  if (!m) return null;
+  return {
+    episodeNumber: Number.parseInt(m[1], 10),
+    cleanedTitle: decoded.slice(m[0].length),
+  };
+}
+
+/** Decoded title, stripped of OCATC `SSEE` prefix when present. */
+export function displayTitle(item: TimelineItem): string {
+  const parsed = parseOnCinemaPrefix(item);
+  if (parsed) return parsed.cleanedTitle;
+  return decodeHtmlEntities(item.title);
+}
+
+export function formatCategoryLabel(category: string): string {
+  return category
+    .split("-")
+    .filter((w) => w.length > 0)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
 export function episodeBadgeParts(item: TimelineItem): string[] {
   const badgeParts: string[] = [];
   if (item.season_name) badgeParts.push(item.season_name);
@@ -95,7 +133,9 @@ export function episodeBadgeParts(item: TimelineItem): string[] {
     const sn = effectiveSeasonNumber(item);
     if (sn != null) badgeParts.push(`Season ${sn}`);
   }
-  if (item.category) badgeParts.push(item.category.replace(/-/g, " "));
+  const parsed = parseOnCinemaPrefix(item);
+  if (parsed) badgeParts.push(`Episode ${parsed.episodeNumber}`);
+  if (item.category) badgeParts.push(formatCategoryLabel(item.category));
   if (item.is_live) badgeParts.push("Live");
   return badgeParts;
 }
