@@ -88,6 +88,18 @@ export function collectSeasons(
   return arr;
 }
 
+export function episodeBadgeParts(item: TimelineItem): string[] {
+  const badgeParts: string[] = [];
+  if (item.season_name) badgeParts.push(item.season_name);
+  else {
+    const sn = effectiveSeasonNumber(item);
+    if (sn != null) badgeParts.push(`Season ${sn}`);
+  }
+  if (item.category) badgeParts.push(item.category.replace(/-/g, " "));
+  if (item.is_live) badgeParts.push("Live");
+  return badgeParts;
+}
+
 export function firstItemKeyPerSeason(
   itemsInOrder: TimelineItem[],
 ): Map<number, string> {
