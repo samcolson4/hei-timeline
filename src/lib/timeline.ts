@@ -1,19 +1,23 @@
 import type { TimelineItem, TimelinePayload } from "./types";
 
+/** How entries are ordered: newest or oldest air date first. */
+export type ChronologicalOrder = "newest" | "oldest";
+
 export function readTimeline(
   payload: TimelinePayload,
 ): { items: TimelineItem[]; generatedAt: string } {
   return {
-    items: [...payload.items].sort((a, b) =>
-      a.air_date < b.air_date ? 1 : a.air_date > b.air_date ? -1 : 0,
-    ),
+    items: [...payload.items],
     generatedAt: payload.generated_at,
   };
 }
 
 export type YearGroup = { year: number; items: TimelineItem[] };
 
-export function groupByYear(items: TimelineItem[]): YearGroup[] {
+export function groupByYear(
+  items: TimelineItem[],
+  order: ChronologicalOrder = "newest",
+): YearGroup[] {
   const map = new Map<number, TimelineItem[]>();
   for (const item of items) {
     const year = parseInt(item.air_date.slice(0, 4), 10);
@@ -22,13 +26,24 @@ export function groupByYear(items: TimelineItem[]): YearGroup[] {
     if (list) list.push(item);
     else map.set(y, [item]);
   }
+
+  const itemCmp =
+    order === "newest"
+      ? (a: TimelineItem, b: TimelineItem) =>
+          b.air_date.localeCompare(a.air_date)
+      : (a: TimelineItem, b: TimelineItem) =>
+          a.air_date.localeCompare(b.air_date);
+
+  const yearCmp =
+    order === "newest"
+      ? (a: number, b: number) => b - a
+      : (a: number, b: number) => a - b;
+
   return [...map.entries()]
-    .sort((a, b) => b[0] - a[0])
+    .sort(([ay], [by]) => yearCmp(ay, by))
     .map(([year, group]) => ({
       year,
-      items: group.sort((a, b) =>
-        a.air_date < b.air_date ? 1 : a.air_date > b.air_date ? -1 : 0,
-      ),
+      items: [...group].sort(itemCmp),
     }));
 }
 

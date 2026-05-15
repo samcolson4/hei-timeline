@@ -1,3 +1,4 @@
+import type { ChronologicalOrder } from "./timeline";
 import type { TimelineItem } from "./types";
 
 export type ShowTypeFilterId =
@@ -59,22 +60,32 @@ export function matchesShowType(
   }
 }
 
-export function collectYears(items: TimelineItem[]): number[] {
+export function collectYears(
+  items: TimelineItem[],
+  order: ChronologicalOrder = "newest",
+): number[] {
   const set = new Set<number>();
   for (const item of items) {
     const y = parseInt(item.air_date.slice(0, 4), 10);
     if (Number.isFinite(y)) set.add(y);
   }
-  return [...set].sort((a, b) => b - a);
+  const arr = [...set];
+  arr.sort((a, b) => (order === "newest" ? b - a : a - b));
+  return arr;
 }
 
-export function collectSeasons(items: TimelineItem[]): number[] {
+export function collectSeasons(
+  items: TimelineItem[],
+  order: ChronologicalOrder = "newest",
+): number[] {
   const set = new Set<number>();
   for (const item of items) {
     const n = effectiveSeasonNumber(item);
     if (n != null) set.add(n);
   }
-  return [...set].sort((a, b) => b - a);
+  const arr = [...set];
+  arr.sort((a, b) => (order === "newest" ? b - a : a - b));
+  return arr;
 }
 
 export function firstItemKeyPerSeason(
