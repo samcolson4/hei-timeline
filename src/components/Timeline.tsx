@@ -144,8 +144,8 @@ export function Timeline({ items }: TimelineProps) {
             >
               {(
                 [
-                  { id: "newest" as const, label: "Newest first" },
                   { id: "oldest" as const, label: "Oldest first" },
+                  { id: "newest" as const, label: "Newest first" },
                 ] as const
               ).map(({ id, label }) => {
                 const on = chronology === id;

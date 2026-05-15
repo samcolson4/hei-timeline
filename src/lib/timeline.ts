@@ -6,8 +6,13 @@ export type ChronologicalOrder = "newest" | "oldest";
 export function readTimeline(
   payload: TimelinePayload,
 ): { items: TimelineItem[]; generatedAt: string } {
+  const items = [...payload.items].sort((a, b) => {
+    const byDate = a.air_date.localeCompare(b.air_date);
+    if (byDate !== 0) return byDate;
+    return a.id - b.id;
+  });
   return {
-    items: [...payload.items],
+    items,
     generatedAt: payload.generated_at,
   };
 }
