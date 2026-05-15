@@ -153,9 +153,6 @@ export function Timeline({ items, generatedAt }: TimelineProps) {
                 );
               })}
             </div>
-            <p className="text-xs text-[color-mix(in_oklab,var(--foreground)_45%,transparent)]">
-              Your choice is saved in this browser until you clear site data.
-            </p>
           </div>
         </div>
 
