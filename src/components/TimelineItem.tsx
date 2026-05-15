@@ -89,7 +89,7 @@ export function TimelineItemRow({ item, scrollAnchorId }: TimelineItemRowProps) 
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 font-medium text-blue-600 underline-offset-4 hover:underline dark:text-blue-400"
           >
-            Open on HEI Network
+            Watch on the HEI Network
             <ExternalIcon className="h-3.5 w-3.5 shrink-0 opacity-80" />
           </a>
         </p>
