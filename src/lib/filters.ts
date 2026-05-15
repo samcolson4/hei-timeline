@@ -117,6 +117,12 @@ export function firstItemKeyPerSeason(
 
 export function scrollToElementId(id: string): void {
   if (typeof document === "undefined") return;
+  const align = () => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "auto", block: "start" });
+  };
   const el = document.getElementById(id);
   el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  // Post-layout passes: posters/images load after first paint and shift content down.
+  window.setTimeout(align, 400);
+  window.setTimeout(align, 900);
 }

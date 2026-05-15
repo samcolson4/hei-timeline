@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 import { useChronology } from "@/lib/chronology";
+import { decodeHtmlEntities } from "@/lib/htmlEntities";
 import {
   orderedItemsForNavigation,
   resolveEpisodeNeighbors,
@@ -36,7 +37,9 @@ export function EpisodePrevNext({ currentId, items }: EpisodePrevNextProps) {
         {prev ? (
           <Link href={`/episode/${prev.id}`} className={navBtn}>
             ← Previous
-            <span className="sr-only">: {prev.title}</span>
+            <span className="sr-only">
+              : {decodeHtmlEntities(prev.title)}
+            </span>
           </Link>
         ) : (
           <span className={navBtnDisabled}>← Previous</span>
@@ -46,7 +49,9 @@ export function EpisodePrevNext({ currentId, items }: EpisodePrevNextProps) {
         {next ? (
           <Link href={`/episode/${next.id}`} className={navBtn}>
             Next →
-            <span className="sr-only">: {next.title}</span>
+            <span className="sr-only">
+              : {decodeHtmlEntities(next.title)}
+            </span>
           </Link>
         ) : (
           <span className={navBtnDisabled}>Next →</span>

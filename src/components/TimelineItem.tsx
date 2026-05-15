@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { formatDisplayDate } from "@/lib/timeline";
 import { episodeBadgeParts } from "@/lib/filters";
+import { decodeHtmlEntities } from "@/lib/htmlEntities";
+import { formatDisplayDate } from "@/lib/timeline";
 import type { TimelineItem } from "@/lib/types";
 
 function ExternalIcon({ className }: { className?: string }) {
@@ -36,6 +37,7 @@ type TimelineItemRowProps = {
 
 export function TimelineItemRow({ item, scrollAnchorId }: TimelineItemRowProps) {
   const badgeParts = episodeBadgeParts(item);
+  const title = decodeHtmlEntities(item.title);
 
   const article = (
     <article className="group relative grid gap-4 border-b border-[color-mix(in_oklab,var(--foreground)_8%,transparent)] py-8 sm:grid-cols-[7.5rem_1fr] sm:gap-8">
@@ -78,7 +80,7 @@ export function TimelineItemRow({ item, scrollAnchorId }: TimelineItemRowProps) 
             href={`/episode/${item.id}`}
             className="text-[var(--foreground)] underline-offset-4 transition hover:text-blue-600 hover:underline dark:hover:text-blue-400"
           >
-            {item.title}
+            {title}
           </Link>
         </h3>
         <p className="text-sm">
@@ -103,7 +105,7 @@ export function TimelineItemRow({ item, scrollAnchorId }: TimelineItemRowProps) 
 
   if (scrollAnchorId) {
     return (
-      <div id={scrollAnchorId} className="scroll-mt-24">
+      <div id={scrollAnchorId} className="scroll-mt-32 md:scroll-mt-40">
         {article}
       </div>
     );

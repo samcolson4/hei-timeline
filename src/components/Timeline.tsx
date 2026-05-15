@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { setChronologyAndPersist, useChronology } from "@/lib/chronology";
+import { decodeHtmlEntities } from "@/lib/htmlEntities";
 import { groupByYear } from "@/lib/timeline";
 import type { TimelineItem } from "@/lib/types";
 import {
@@ -52,7 +53,7 @@ export function Timeline({ items, generatedAt }: TimelineProps) {
     if (!q) return byType;
     return byType.filter((item) => {
       const hay = [
-        item.title,
+        decodeHtmlEntities(item.title),
         item.season_name ?? "",
         item.category ?? "",
         item.slug,
