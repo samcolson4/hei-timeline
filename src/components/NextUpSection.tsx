@@ -43,6 +43,7 @@ export function NextUpSection({ items }: NextUpSectionProps) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHydrated(true);
   }, []);
 
@@ -56,14 +57,12 @@ export function NextUpSection({ items }: NextUpSectionProps) {
   if (next == null && items.length > 0) {
     return (
       <section
-        className="rounded-2xl border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[color-mix(in_oklab,var(--foreground)_4%,transparent)] p-6 sm:p-8"
+        className="rounded-2xl border border-white/10 bg-white/[0.035] p-6 sm:p-8"
         aria-label="Next up"
       >
-        <h2 className="text-lg font-semibold text-[var(--foreground)]">
-          Next up
-        </h2>
-        <p className="mt-2 text-[color-mix(in_oklab,var(--foreground)_62%,transparent)]">
-          You&rsquo;re caught up — every item in the timeline is marked watched.
+        <h2 className="text-lg font-extrabold text-[#f6f4ef]">You&rsquo;re caught up</h2>
+        <p className="mt-2 text-[#9b9aa1]">
+          Every item in the timeline is marked watched. Five bags and two sodas.
         </p>
       </section>
     );
@@ -77,72 +76,72 @@ export function NextUpSection({ items }: NextUpSectionProps) {
 
   return (
     <section
-      className="rounded-2xl border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[color-mix(in_oklab,var(--foreground)_4%,transparent)] p-6 sm:p-8"
+      className="relative overflow-hidden rounded-[18px] border p-5 shadow-[0_22px_50px_-30px_rgba(0,0,0,0.85)] sm:p-6"
+      style={{
+        background:
+          "linear-gradient(160deg, color-mix(in oklab, var(--gold) 9%, #151417), #121214 58%)",
+        borderColor: "color-mix(in oklab, var(--gold) 26%, transparent)",
+      }}
       aria-label="Next up"
     >
-      <h2 className="mb-4 text-lg font-semibold text-[var(--foreground)]">
-        Next up
-      </h2>
-      <div className="grid gap-6 sm:grid-cols-[7.5rem_1fr] sm:gap-8">
-        <div className="relative mx-auto flex w-full max-w-[7.5rem] shrink-0 justify-center sm:mx-0">
+      <div
+        className="absolute inset-x-0 top-0 h-1"
+        style={{ background: "var(--gold)" }}
+        aria-hidden
+      />
+      <p className="mb-3.5 text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--gold)]">
+        ★ Up Next
+      </p>
+      <div className="grid gap-4 sm:grid-cols-[5.75rem_1fr] sm:gap-5">
+        <Link
+          href={`/episode/${next.id}`}
+          className="block w-[92px] shrink-0 overflow-hidden rounded-[10px] bg-black shadow-[0_0_0_1px_rgba(255,255,255,0.12),0_14px_30px_-14px_rgba(0,0,0,0.8)]"
+        >
           {next.poster_url ? (
-            <Link
-              href={`/episode/${next.id}`}
-              className="block overflow-hidden rounded-lg bg-black/5 ring-1 ring-black/10 transition hover:ring-[color-mix(in_oklab,var(--foreground)_22%,transparent)] dark:bg-white/5 dark:ring-white/10"
-            >
-              <Image
-                src={next.poster_url}
-                alt=""
-                width={120}
-                height={180}
-                className="aspect-[2/3] h-auto w-full object-cover"
-                sizes="120px"
-                unoptimized
-              />
-            </Link>
+            <Image
+              src={next.poster_url}
+              alt=""
+              width={92}
+              height={138}
+              className="aspect-[2/3] h-auto w-full object-cover"
+              sizes="92px"
+              unoptimized
+            />
           ) : (
-            <Link
-              href={`/episode/${next.id}`}
-              className="flex aspect-[2/3] w-full items-center justify-center rounded-lg bg-[color-mix(in_oklab,var(--foreground)_6%,transparent)] text-xs text-[color-mix(in_oklab,var(--foreground)_45%,transparent)] transition"
-            >
+            <span className="flex aspect-[2/3] w-full items-center justify-center text-xs text-[#6b6a72]">
               No art
-            </Link>
+            </span>
           )}
-        </div>
-        <div className="min-w-0 space-y-2 sm:justify-center sm:self-center">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-            <time
-              dateTime={next.air_date}
-              className="text-sm text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]"
-            >
-              {formatDisplayDate(next.air_date)}
-            </time>
-            <WatchedToggle itemId={next.id} watched={watched} />
-          </div>
-          <h3 className="text-xl font-semibold leading-snug tracking-tight text-balance sm:text-2xl">
+        </Link>
+        <div className="min-w-0 space-y-2.5 sm:self-center">
+          <h3 className="text-balance text-xl font-extrabold leading-[1.08] tracking-tight text-[#f6f4ef] sm:text-[27px]">
             <Link
               href={`/episode/${next.id}`}
-              className="text-[var(--foreground)] underline-offset-4 transition hover:text-blue-600 hover:underline dark:hover:text-blue-400"
+              className="text-inherit no-underline transition hover:text-[var(--gold)]"
             >
               {title}
             </Link>
           </h3>
-          <p className="text-sm">
+          {badgeParts.length > 0 ? (
+            <p className="text-sm text-[#a7a6ad]">{badgeParts.join(" · ")}</p>
+          ) : null}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            <time dateTime={next.air_date} className="text-sm text-[#9b9aa1]">
+              {formatDisplayDate(next.air_date)}
+            </time>
+            <WatchedToggle itemId={next.id} watched={watched} />
+          </div>
+          <p className="pt-1 text-sm">
             <a
               href={next.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 font-medium text-blue-600 underline-offset-4 hover:underline dark:text-blue-400"
+              className="inline-flex items-center gap-1.5 font-bold text-[var(--gold)] underline-offset-4 hover:underline"
             >
               Watch on the HEI Network
               <ExternalIcon className="h-3.5 w-3.5 shrink-0 opacity-80" />
             </a>
           </p>
-          {badgeParts.length > 0 ? (
-            <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_58%,transparent)]">
-              {badgeParts.join(" · ")}
-            </p>
-          ) : null}
         </div>
       </div>
     </section>

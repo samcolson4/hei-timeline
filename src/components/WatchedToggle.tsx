@@ -3,11 +3,11 @@
 import { toggleWatched } from "@/lib/watched";
 
 const pillBase =
-  "shrink-0 rounded-full border px-3 py-1.5 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/40 dark:focus-visible:ring-blue-400/40";
+  "shrink-0 cursor-pointer rounded-full border px-3 py-1.5 text-[12.5px] font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25";
 const pillIdle =
-  "border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[color-mix(in_oklab,var(--foreground)_4%,transparent)] text-[var(--foreground)] hover:border-blue-600/35 hover:bg-blue-600/10 dark:hover:border-blue-400/30 dark:hover:bg-blue-400/10";
+  "border-white/[0.16] bg-white/5 text-[#cfcdd4] hover:border-white/30 hover:bg-white/10";
 const pillActive =
-  "border-blue-600/60 bg-blue-600/15 text-blue-700 dark:border-blue-400/50 dark:bg-blue-400/15 dark:text-blue-200";
+  "border-[var(--gold)]/45 bg-[var(--gold)]/15 text-[var(--gold)]";
 
 type WatchedToggleProps = {
   itemId: number;
@@ -24,7 +24,7 @@ export function WatchedToggle({ itemId, watched, className }: WatchedToggleProps
       aria-label={watched ? "Mark unwatched" : "Mark watched"}
       onClick={() => toggleWatched(itemId)}
     >
-      {watched ? "Watched" : "Mark watched"}
+      {watched ? "Watched ✓" : "Mark watched"}
     </button>
   );
 }

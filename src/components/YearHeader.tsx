@@ -6,9 +6,17 @@ export function YearHeader({ year }: YearHeaderProps) {
   return (
     <h2
       id={headingId}
-      className="scroll-mt-28 sticky top-0 z-10 border-b border-[color-mix(in_oklab,var(--foreground)_12%,transparent)] bg-[var(--background)]/95 py-6 text-3xl font-bold tabular-nums uppercase tracking-[0.12em] text-[color-mix(in_oklab,var(--foreground)_55%,transparent)] backdrop-blur-sm supports-[backdrop-filter]:bg-[var(--background)]/80 sm:scroll-mt-32 sm:text-4xl md:scroll-mt-40 md:text-5xl md:tracking-[0.14em]"
+      className="sticky top-0 z-10 flex scroll-mt-28 items-center gap-4 py-4 text-3xl font-black tabular-nums tracking-[0.02em] text-[#f6f4ef] backdrop-blur-[2px] sm:scroll-mt-32 sm:text-4xl md:scroll-mt-40 md:text-5xl"
+      style={{
+        background: "linear-gradient(180deg, #0c0c0e 70%, rgba(12,12,14,0))",
+      }}
     >
-      {label}
+      <span>{label}</span>
+      <span
+        className="h-0.5 flex-1 rounded-full"
+        style={{ background: "var(--gold)", opacity: 0.5 }}
+        aria-hidden
+      />
     </h2>
   );
 }

@@ -1,25 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0c0c0e;
+  --foreground: #f3f1ec;
+
+  /* Brand accents */
+  --accent: #e11d2a;      /* cinema red — header signature */
+  --accent-ink: #ffffff;  /* text on a red fill */
+  --gold: #f2c14e;        /* popcorn gold — body accent */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-archivo);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--gold);
+  color: #1a1404;
+}
+
+/* hide the horizontal scrollbar on the jump-to rows */
+.fbts-scroll::-webkit-scrollbar {
+  display: none;
 }

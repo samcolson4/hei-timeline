@@ -34,7 +34,7 @@ function SodaCupFab() {
       href="https://buymeacoffee.com/samcolson4"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-5 right-5 z-50 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-2xl border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[color-mix(in_oklab,var(--background)_88%,var(--foreground)_8%)] p-1.5 shadow-[0_10px_40px_-10px_color-mix(in_oklab,var(--foreground)_45%,transparent)] backdrop-blur-md transition hover:scale-105 hover:shadow-[0_14px_44px_-12px_color-mix(in_oklab,var(--foreground)_55%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/45 dark:focus-visible:ring-blue-400/45"
+      className="fixed bottom-5 right-5 z-50 flex h-[4.875rem] w-[4.875rem] items-center justify-center rounded-2xl border border-white/15 bg-[rgba(20,20,24,0.85)] p-1.5 shadow-[0_14px_40px_-14px_rgba(0,0,0,0.85)] backdrop-blur-md transition hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]/50"
       aria-label="Buy me a coffee"
     >
       <Image
@@ -43,22 +43,44 @@ function SodaCupFab() {
         width={96}
         height={96}
         className="h-full w-full object-contain"
-        sizes="84px"
+        sizes="78px"
       />
     </a>
   );
 }
 
+function ChevronIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      aria-hidden
+      className={className}
+    >
+      <path
+        fillRule="evenodd"
+        d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
 const pillBase =
-  "shrink-0 rounded-full border px-3 py-1.5 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/40 dark:focus-visible:ring-blue-400/40";
+  "shrink-0 cursor-pointer rounded-full border px-3.5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25";
 const pillIdle =
-  "border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[color-mix(in_oklab,var(--foreground)_4%,transparent)] text-[var(--foreground)] hover:border-blue-600/35 hover:bg-blue-600/10 dark:hover:border-blue-400/30 dark:hover:bg-blue-400/10";
+  "border-white/12 bg-white/5 text-[#e7e5ea] hover:border-white/25 hover:bg-white/10";
 const pillActive =
-  "border-blue-600/60 bg-blue-600/15 text-blue-700 dark:border-blue-400/50 dark:bg-blue-400/15 dark:text-blue-200";
+  "border-transparent bg-[var(--accent)] text-[var(--accent-ink)] shadow-[0_5px_16px_-6px_var(--accent)]";
+
+const labelClass =
+  "block text-[11px] font-bold uppercase tracking-[0.12em] text-[#8c8b92]";
 
 export function Timeline({ items }: TimelineProps) {
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<ShowTypeFilterId>("all");
+  const [controlsOpen, setControlsOpen] = useState(true);
   const chronology = useChronology();
   const watchedIds = useWatchedIds();
 
@@ -106,8 +128,7 @@ export function Timeline({ items }: TimelineProps) {
   const hasUnknownYear = yearGroups.some((g) => g.year === 0);
 
   function jumpToYear(year: number) {
-    const id =
-      year === 0 ? "year-unknown-heading" : `year-${year}-heading`;
+    const id = year === 0 ? "year-unknown-heading" : `year-${year}-heading`;
     scrollToElementId(id);
   }
 
@@ -115,173 +136,249 @@ export function Timeline({ items }: TimelineProps) {
     scrollToElementId(`season-jump-${seasonNum}`);
   }
 
+  // Build a short summary of non-default active filters
+  const activeFilterParts: string[] = [];
+  if (chronology === "newest") activeFilterParts.push("Newest first");
+  if (typeFilter !== "all") {
+    const opt = SHOW_TYPE_OPTIONS.find((o) => o.id === typeFilter);
+    if (opt) activeFilterParts.push(opt.label);
+  }
+  if (query.trim()) activeFilterParts.push(`"${query.trim()}"`);
+  const activeFilterSummary = activeFilterParts.join(" · ");
+
   return (
     <div className="w-full">
-      <header className="mb-10 space-y-4 border-b border-[color-mix(in_oklab,var(--foreground)_10%,transparent)] pb-10">
-        <div className="space-y-2">
-          <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            HEI Network Timeline
-          </h1>
-          <p className="max-w-2xl text-lg leading-relaxed text-[color-mix(in_oklab,var(--foreground)_62%,transparent)]">
-            Every episode and related release on{" "}
-            <a
-              href="https://www.heinetwork.tv/"
-              className="font-medium text-blue-600 underline-offset-4 hover:underline dark:text-blue-400"
-            >
-              heinetwork.tv
-            </a>
-            .
-          </p>
-          <NextUpSection items={items} />
-          <div className="space-y-2 pt-1">
-            <span className="block text-sm font-medium text-[color-mix(in_oklab,var(--foreground)_65%,transparent)]">
-              Order
-            </span>
-            <div
-              className="-mx-1 flex flex-wrap gap-2 px-1"
-              role="group"
-              aria-label="Timeline sort order"
-            >
-              {(
-                [
-                  { id: "oldest" as const, label: "Oldest first" },
-                  { id: "newest" as const, label: "Newest first" },
-                ] as const
-              ).map(({ id, label }) => {
-                const on = chronology === id;
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    className={`${pillBase} ${on ? pillActive : pillIdle}`}
-                    aria-pressed={on}
-                    onClick={() => setChronologyAndPersist(id)}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
+      <header className="mb-9 space-y-6 border-b border-white/10 pb-9">
+        {/* Brand lockup */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-4 sm:gap-5">
+            <Image
+              src="/popcorn.png"
+              alt=""
+              width={72}
+              height={72}
+              className="h-16 w-16 shrink-0 drop-shadow-[0_6px_16px_rgba(0,0,0,0.5)] sm:h-[72px] sm:w-[72px]"
+              priority
+            />
+            <div className="min-w-0">
+              <p className="mb-1.5 text-[11px] font-extrabold uppercase tracking-[0.32em] text-[var(--accent)]">
+                A Complete* On Cinema Timeline
+              </p>
+              <h1 className="text-balance text-4xl font-black leading-[0.92] tracking-tight text-[#f6f4ef] sm:text-5xl lg:text-6xl">
+                Five Bags and Two Sodas
+              </h1>
             </div>
           </div>
-        </div>
 
-        <div className="space-y-2">
-          <span className="block text-sm font-medium text-[color-mix(in_oklab,var(--foreground)_65%,transparent)]">
-            Show type
-          </span>
+          {/* Marquee bulb strip */}
           <div
-            className="-mx-1 flex flex-wrap gap-2 px-1"
-            role="group"
-            aria-label="Filter by show type"
-          >
-            {SHOW_TYPE_OPTIONS.map(({ id, label }) => {
-              const on = typeFilter === id;
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  className={`${pillBase} ${on ? pillActive : pillIdle}`}
-                  aria-pressed={on}
-                  onClick={() => setTypeFilter(id)}
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+            className="h-2.5 rounded-full opacity-90"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle, var(--accent) 0 2.4px, transparent 3px)",
+              backgroundSize: "22px 10px",
+              backgroundPosition: "center",
+            }}
+            aria-hidden
+          />
 
-        <nav
-          className="space-y-2"
-          aria-label="Jump to year"
-        >
-          <span className="block text-sm font-medium text-[color-mix(in_oklab,var(--foreground)_65%,transparent)]">
-            Jump to year
-          </span>
-          <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {years.map((y) => (
-              <button
-                key={y}
-                type="button"
-                className={`${pillBase} ${pillIdle}`}
-                onClick={() => jumpToYear(y)}
-              >
-                {y}
-              </button>
-            ))}
-            {hasUnknownYear ? (
-              <button
-                type="button"
-                className={`${pillBase} ${pillIdle}`}
-                onClick={() => jumpToYear(0)}
-              >
-                Unknown date
-              </button>
-            ) : null}
-          </div>
-        </nav>
-
-        <nav
-          className="space-y-2"
-          aria-label="Jump to On Cinema season"
-        >
-          <span className="block text-sm font-medium text-[color-mix(in_oklab,var(--foreground)_65%,transparent)]">
-            Jump to season
-          </span>
-          {seasons.length === 0 ? (
-            <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_48%,transparent)]">
-              No numbered seasons in the current results (try &ldquo;On
-              Cinema&rdquo; or clear filters).
-            </p>
-          ) : (
-            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {seasons.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  className={`${pillBase} ${pillIdle}`}
-                  onClick={() => jumpToSeason(s)}
-                >
-                  Season {s}
-                </button>
+          {/* Signature rating lockup */}
+          <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.025] px-4 py-3.5">
+            <div className="flex items-end gap-px">
+              {Array.from({ length: 5 }).map((_, i) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={i}
+                  src="/popcorn.png"
+                  alt=""
+                  className="h-[34px] w-[34px]"
+                />
               ))}
             </div>
-          )}
-        </nav>
+            <span className="text-[22px] font-extrabold text-[#5a5a62]">+</span>
+            <div className="flex items-end gap-0.5">
+              {Array.from({ length: 2 }).map((_, i) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={i}
+                  src="/soda-cup.png"
+                  alt=""
+                  className="h-[38px] w-[30px] object-contain"
+                />
+              ))}
+            </div>
+            <span className="text-[13px] font-semibold text-[#9b9aa1]">
+              The highest rating Tim can give.{" "}
+              <strong className="font-bold text-[#f6f4ef]">
+                A perfect score.
+              </strong>
+            </span>
+          </div>
+        </div>
 
-        <label className="block max-w-xl">
-          <span className="mb-2 block text-sm font-medium text-[color-mix(in_oklab,var(--foreground)_65%,transparent)]">
-            Search
-          </span>
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search title, season, or category…"
-            autoComplete="off"
-            className="w-full rounded-lg border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[color-mix(in_oklab,var(--foreground)_4%,transparent)] px-4 py-3 text-base text-[var(--foreground)] outline-none ring-blue-600/0 transition placeholder:text-[color-mix(in_oklab,var(--foreground)_40%,transparent)] focus:border-blue-600/50 focus:ring-4 focus:ring-blue-600/15 dark:focus:border-blue-400/40 dark:focus:ring-blue-400/15"
-          />
-        </label>
-        <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]">
-          Showing <strong>{filtered.length}</strong> of{" "}
-          <strong>{items.length}</strong> items
+        <NextUpSection items={items} />
+
+        {/* Collapsible controls */}
+        <div className="rounded-2xl border border-white/10 bg-white/[0.02]">
+          <button
+            type="button"
+            onClick={() => setControlsOpen((o) => !o)}
+            className="flex w-full cursor-pointer items-center justify-between gap-3 px-4 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/20"
+            aria-expanded={controlsOpen}
+          >
+            <span className="flex min-w-0 items-center gap-2.5">
+              <span className="text-sm font-bold text-[#f6f4ef]">
+                Filters &amp; navigation
+              </span>
+              {!controlsOpen && activeFilterSummary ? (
+                <span className="truncate text-xs text-[#8c8b92]">
+                  {activeFilterSummary}
+                </span>
+              ) : null}
+            </span>
+            <ChevronIcon
+              className={`h-5 w-5 shrink-0 text-[#8c8b92] transition-transform duration-200 ${controlsOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+
+          {controlsOpen ? (
+            <div className="space-y-5 border-t border-white/[0.08] px-4 py-4">
+              <div className="space-y-2.5">
+                <span className={labelClass}>Order</span>
+                <div
+                  className="flex flex-wrap gap-2"
+                  role="group"
+                  aria-label="Timeline sort order"
+                >
+                  {(
+                    [
+                      { id: "oldest" as const, label: "Oldest first" },
+                      { id: "newest" as const, label: "Newest first" },
+                    ] as const
+                  ).map(({ id, label }) => {
+                    const on = chronology === id;
+                    return (
+                      <button
+                        key={id}
+                        type="button"
+                        className={`${pillBase} ${on ? pillActive : pillIdle}`}
+                        aria-pressed={on}
+                        onClick={() => setChronologyAndPersist(id)}
+                      >
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="space-y-2.5">
+                <span className={labelClass}>Show type</span>
+                <div
+                  className="flex flex-wrap gap-2"
+                  role="group"
+                  aria-label="Filter by show type"
+                >
+                  {SHOW_TYPE_OPTIONS.map(({ id, label }) => {
+                    const on = typeFilter === id;
+                    return (
+                      <button
+                        key={id}
+                        type="button"
+                        className={`${pillBase} ${on ? pillActive : pillIdle}`}
+                        aria-pressed={on}
+                        onClick={() => setTypeFilter(id)}
+                      >
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <nav className="space-y-2.5" aria-label="Jump to year">
+                <span className={labelClass}>Jump to year</span>
+                <div className="fbts-scroll flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]">
+                  {years.map((y) => (
+                    <button
+                      key={y}
+                      type="button"
+                      className={`${pillBase} ${pillIdle}`}
+                      onClick={() => jumpToYear(y)}
+                    >
+                      {y}
+                    </button>
+                  ))}
+                  {hasUnknownYear ? (
+                    <button
+                      type="button"
+                      className={`${pillBase} ${pillIdle}`}
+                      onClick={() => jumpToYear(0)}
+                    >
+                      Unknown date
+                    </button>
+                  ) : null}
+                </div>
+              </nav>
+
+              <nav className="space-y-2.5" aria-label="Jump to On Cinema season">
+                <span className={labelClass}>Jump to season</span>
+                {seasons.length === 0 ? (
+                  <p className="text-sm text-[#8c8b92]">
+                    No numbered seasons in the current results (try &ldquo;On
+                    Cinema&rdquo; or clear filters).
+                  </p>
+                ) : (
+                  <div className="fbts-scroll flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]">
+                    {seasons.map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        className={`${pillBase} ${pillIdle}`}
+                        onClick={() => jumpToSeason(s)}
+                      >
+                        Season {s}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </nav>
+
+              <label className="block max-w-xl">
+                <span className={`mb-2 ${labelClass}`}>Search</span>
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search title, season, or category…"
+                  autoComplete="off"
+                  className="w-full rounded-xl border border-white/14 bg-white/5 px-4 py-3 text-base text-[var(--foreground)] outline-none transition placeholder:text-[#6f6e76] focus:border-[var(--gold)]/55 focus:ring-4 focus:ring-[var(--gold)]/15"
+                />
+              </label>
+            </div>
+          ) : null}
+        </div>
+
+        <p className="text-sm text-[#8c8b92]">
+          Showing <strong className="text-[#cfcdd4]">{filtered.length}</strong>{" "}
+          of <strong className="text-[#cfcdd4]">{items.length}</strong> items
         </p>
       </header>
 
       {yearGroups.length === 0 ? (
-        <p className="py-16 text-center text-[color-mix(in_oklab,var(--foreground)_55%,transparent)]">
+        <p className="py-16 text-center text-[#8c8b92]">
           No matches for this combination of filters
-          {query ? ` and “${query}”` : ""}.
+          {query ? ` and "${query}"` : ""}.
         </p>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {yearGroups.map(({ year, items: groupItems }) => {
             const headingId =
               year === 0 ? "year-unknown-heading" : `year-${year}-heading`;
             return (
               <section key={year} aria-labelledby={headingId}>
                 <YearHeader year={year} />
-                <div className="divide-y divide-transparent">
+                <div className="flex flex-col gap-3 pb-2 pt-3.5">
                   {groupItems.map((item) => {
                     const sn = effectiveSeasonNumber(item);
                     const k = itemKey(item);

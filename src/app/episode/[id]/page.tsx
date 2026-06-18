@@ -74,7 +74,7 @@ export default async function EpisodePage({
       <p className="mb-8">
         <Link
           href="/"
-          className="text-sm font-medium text-blue-600 underline-offset-4 hover:underline dark:text-blue-400"
+          className="text-sm font-bold text-[var(--gold)] underline-offset-4 hover:underline"
         >
           ← Back to timeline
         </Link>
@@ -83,7 +83,7 @@ export default async function EpisodePage({
       <article className="grid gap-10 sm:grid-cols-[minmax(0,11rem)_1fr] sm:gap-12">
         <div className="mx-auto w-full max-w-[11rem] sm:mx-0">
           {episode.poster_url ? (
-            <div className="overflow-hidden rounded-xl bg-black/5 ring-1 ring-black/10 dark:bg-white/5 dark:ring-white/10">
+            <div className="overflow-hidden rounded-xl bg-black">
               <Image
                 src={episode.poster_url}
                 alt=""
@@ -96,31 +96,27 @@ export default async function EpisodePage({
               />
             </div>
           ) : (
-            <div className="flex aspect-[2/3] w-full items-center justify-center rounded-xl bg-[color-mix(in_oklab,var(--foreground)_6%,transparent)] text-sm text-[color-mix(in_oklab,var(--foreground)_45%,transparent)]">
+            <div className="flex aspect-[2/3] w-full items-center justify-center rounded-xl bg-white/5 text-sm text-[#6b6a72]">
               No poster
             </div>
           )}
         </div>
 
         <div className="min-w-0 space-y-4">
-          <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]">
+          <p className="text-sm text-[#8c8b92]">
             Air date:{" "}
             <time dateTime={episode.air_date}>
               {formatDisplayDate(episode.air_date)}
             </time>
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+          <h1 className="text-balance text-3xl font-black tracking-tight text-[#f6f4ef] sm:text-4xl">
             {title}
           </h1>
           {badges.length > 0 ? (
-            <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_58%,transparent)]">
-              {badges.join(" · ")}
-            </p>
+            <p className="text-sm text-[#a7a6ad]">{badges.join(" · ")}</p>
           ) : null}
           {runtimeLabel ? (
-            <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_55%,transparent)]">
-              Runtime: {runtimeLabel}
-            </p>
+            <p className="text-sm text-[#8c8b92]">Runtime: {runtimeLabel}</p>
           ) : null}
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -132,14 +128,14 @@ export default async function EpisodePage({
               href={episode.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-full min-h-14 items-center justify-center rounded-xl bg-blue-600 px-6 text-base font-semibold text-white shadow-sm transition hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-600/35 sm:w-auto sm:min-w-[18rem] dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus-visible:ring-blue-400/30"
+              className="inline-flex min-h-14 w-full items-center justify-center rounded-xl bg-[var(--accent)] px-6 text-base font-bold text-[var(--accent-ink)] shadow-[0_10px_30px_-12px_var(--accent)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--accent)]/35 sm:w-auto sm:min-w-[18rem]"
             >
               Watch on HEI Network
-              <span className="ml-2 text-white/90" aria-hidden>
+              <span className="ml-2 opacity-90" aria-hidden>
                 ↗
               </span>
             </a>
-            <p className="mt-2 text-xs text-[color-mix(in_oklab,var(--foreground)_45%,transparent)]">
+            <p className="mt-2 text-xs text-[#6f6e76]">
               Opens heinetwork.tv in a new tab.
             </p>
           </div>
@@ -150,7 +146,7 @@ export default async function EpisodePage({
                 href={episode.youtube_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-blue-600 underline-offset-4 hover:underline dark:text-blue-400"
+                className="font-bold text-[var(--gold)] underline-offset-4 hover:underline"
               >
                 YouTube
               </a>

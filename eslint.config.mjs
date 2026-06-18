@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Design handoff folder — not production source
+    "design_handoff_timeline_redesign/**",
   ]),
 ]);
 
