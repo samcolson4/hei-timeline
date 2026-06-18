@@ -181,20 +181,20 @@ export function Timeline({ items }: TimelineProps) {
                 Filters &amp; navigation
               </span>
               {!controlsOpen && activeFilterSummary ? (
-                <span className="truncate text-xs text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]">
+                <span className="truncate text-xs text-[color-mix(in_oklab,var(--foreground)_70%,transparent)]">
                   {activeFilterSummary}
                 </span>
               ) : null}
             </span>
             <ChevronIcon
-              className={`h-5 w-5 shrink-0 text-[color-mix(in_oklab,var(--foreground)_50%,transparent)] transition-transform duration-200 ${controlsOpen ? "rotate-180" : ""}`}
+              className={`h-5 w-5 shrink-0 text-[color-mix(in_oklab,var(--foreground)_70%,transparent)] transition-transform duration-200 ${controlsOpen ? "rotate-180" : ""}`}
             />
           </button>
 
           {controlsOpen ? (
             <div className="space-y-5 border-t border-[color-mix(in_oklab,var(--foreground)_8%,transparent)] px-4 py-4">
               <div className="space-y-2">
-                <span className="block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]">
+                <span className="block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_oklab,var(--foreground)_70%,transparent)]">
                   Order
                 </span>
                 <div
@@ -225,7 +225,7 @@ export function Timeline({ items }: TimelineProps) {
               </div>
 
               <div className="space-y-2">
-                <span className="block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]">
+                <span className="block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_oklab,var(--foreground)_70%,transparent)]">
                   Show type
                 </span>
                 <div
@@ -251,7 +251,7 @@ export function Timeline({ items }: TimelineProps) {
               </div>
 
               <nav className="space-y-2" aria-label="Jump to year">
-                <span className="block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]">
+                <span className="block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_oklab,var(--foreground)_70%,transparent)]">
                   Jump to year
                 </span>
                 <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -278,7 +278,7 @@ export function Timeline({ items }: TimelineProps) {
               </nav>
 
               <nav className="space-y-2" aria-label="Jump to On Cinema season">
-                <span className="block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]">
+                <span className="block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_oklab,var(--foreground)_70%,transparent)]">
                   Jump to season
                 </span>
                 {seasons.length === 0 ? (
@@ -303,7 +303,7 @@ export function Timeline({ items }: TimelineProps) {
               </nav>
 
               <label className="block max-w-xl">
-                <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]">
+                <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_oklab,var(--foreground)_70%,transparent)]">
                   Search
                 </span>
                 <input
@@ -319,7 +319,7 @@ export function Timeline({ items }: TimelineProps) {
           ) : null}
         </div>
 
-        <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]">
+        <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_70%,transparent)]">
           Showing <strong>{filtered.length}</strong> of{" "}
           <strong>{items.length}</strong> items
         </p>

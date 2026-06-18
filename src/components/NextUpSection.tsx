@@ -119,14 +119,14 @@ export function NextUpSection({ items }: NextUpSectionProps) {
             </Link>
           </h3>
           {badgeParts.length > 0 ? (
-            <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_58%,transparent)]">
+            <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_75%,transparent)]">
               {badgeParts.join(" · ")}
             </p>
           ) : null}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
             <time
               dateTime={next.air_date}
-              className="text-sm text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]"
+              className="text-sm text-[color-mix(in_oklab,var(--foreground)_70%,transparent)]"
             >
               {formatDisplayDate(next.air_date)}
             </time>
