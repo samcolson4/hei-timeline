@@ -36,8 +36,8 @@ export const metadata: Metadata = {
       "A clean timeline of HEI Network releases, ordered by air date.",
   },
   icons: {
-    icon: [{ url: "/soda-cup.png", type: "image/png" }],
-    apple: "/soda-cup.png",
+    icon: [{ url: "/popcorn.png", type: "image/png" }],
+    apple: "/popcorn.png",
   },
 };
 
