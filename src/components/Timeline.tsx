@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 
 import { setChronologyAndPersist, useChronology } from "@/lib/chronology";
-import { useWatchedIds } from "@/lib/watched";
+import { markAllWatched, useWatchedIds } from "@/lib/watched";
 import { decodeHtmlEntities } from "@/lib/htmlEntities";
 import { groupByYear } from "@/lib/timeline";
 import type { TimelineItem } from "@/lib/types";
@@ -322,6 +322,17 @@ export function Timeline({ items }: TimelineProps) {
                   className="w-full rounded-xl border border-white/14 bg-white/5 px-4 py-3 text-base text-[var(--foreground)] outline-none transition placeholder:text-[#6f6e76] focus:border-[var(--gold)]/55 focus:ring-4 focus:ring-[var(--gold)]/15"
                 />
               </label>
+
+              <div className="space-y-2.5">
+                <span className={labelClass}>Watched</span>
+                <button
+                  type="button"
+                  className={`${pillBase} ${pillIdle}`}
+                  onClick={() => markAllWatched(items.map((i) => i.id))}
+                >
+                  Mark all as watched
+                </button>
+              </div>
             </div>
           ) : null}
         </div>

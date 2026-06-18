@@ -82,6 +82,12 @@ function getWatchedServerSnapshot(): ReadonlySet<number> {
   return EMPTY_WATCHED;
 }
 
+export function markAllWatched(ids: number[]) {
+  const next = new Set(ids);
+  persistWatchedIds(next);
+  notifyWatchedChanged();
+}
+
 export function toggleWatched(id: number) {
   const prev = readFromStorage();
   const next = new Set(prev);
