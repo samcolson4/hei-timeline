@@ -15,25 +15,25 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "HEI Network Timeline",
-    template: "%s · HEI Network Timeline",
+    default: "Five Bags and Two Sodas",
+    template: "%s · Five Bags and Two Sodas",
   },
   description:
-    "A clean timeline of HEI Network releases, ordered by air date. Links go to the official heinetwork.tv site.",
+    "A complete On Cinema timeline — every episode and related release, ordered by air date.",
   openGraph: {
-    title: "HEI Network Timeline",
+    title: "Five Bags and Two Sodas",
     description:
-      "A clean timeline of HEI Network releases, ordered by air date.",
+      "A complete On Cinema timeline — every episode and related release, ordered by air date.",
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "HEI Network Timeline",
+    siteName: "Five Bags and Two Sodas",
   },
   twitter: {
     card: "summary_large_image",
-    title: "HEI Network Timeline",
+    title: "Five Bags and Two Sodas",
     description:
-      "A clean timeline of HEI Network releases, ordered by air date.",
+      "A complete On Cinema timeline — every episode and related release, ordered by air date.",
   },
   icons: {
     icon: [{ url: "/popcorn.png", type: "image/png" }],

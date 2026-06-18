@@ -147,19 +147,22 @@ export function Timeline({ items }: TimelineProps) {
   return (
     <div className="w-full">
       <header className="mb-10 space-y-6 border-b border-[color-mix(in_oklab,var(--foreground)_10%,transparent)] pb-10">
-        <div className="space-y-2">
-          <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            HEI Network Timeline
-          </h1>
-          <p className="max-w-2xl text-lg leading-relaxed text-[color-mix(in_oklab,var(--foreground)_62%,transparent)]">
-            Every episode and related release on{" "}
-            <a
-              href="https://www.heinetwork.tv/"
-              className="font-medium text-blue-600 underline-offset-4 hover:underline dark:text-blue-400"
-            >
-              heinetwork.tv
-            </a>
-            .
+        <div className="space-y-3">
+          <div className="flex items-center gap-4">
+            <Image
+              src="/popcorn.png"
+              alt=""
+              width={64}
+              height={64}
+              className="h-14 w-14 shrink-0 sm:h-16 sm:w-16"
+              priority
+            />
+            <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+              Five Bags and Two Sodas
+            </h1>
+          </div>
+          <p className="text-lg font-medium text-[color-mix(in_oklab,var(--foreground)_55%,transparent)] italic">
+            A Complete* On Cinema Timeline
           </p>
         </div>
 
