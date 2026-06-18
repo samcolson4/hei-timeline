@@ -3,10 +3,13 @@ import { Archivo } from "next/font/google";
 
 import "./globals.css";
 
+// Archivo is a variable font — do NOT pass an explicit `weight` array
+// (that throws in next/font). The variable axis covers 100–900, so all the
+// weights used in the design (400–900) are available via font-weight.
 const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
 });
 
 const siteUrl =

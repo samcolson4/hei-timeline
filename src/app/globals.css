@@ -8,6 +8,8 @@
   --accent: #e11d2a;      /* cinema red — header signature */
   --accent-ink: #ffffff;  /* text on a red fill */
   --gold: #f2c14e;        /* popcorn gold — body accent */
+
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -16,9 +18,15 @@
   --font-sans: var(--font-archivo);
 }
 
+/* Literal values (not var()) so the dark base always paints, regardless of
+   custom-property resolution order. */
+html {
+  background-color: #0c0c0e;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: #0c0c0e;
+  color: #f3f1ec;
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
