@@ -181,39 +181,6 @@ export function Timeline({ items }: TimelineProps) {
             }}
             aria-hidden
           />
-
-          {/* Signature rating lockup */}
-          <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.025] px-4 py-3.5">
-            <div className="flex items-end gap-px">
-              {Array.from({ length: 5 }).map((_, i) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={i}
-                  src="/popcorn.png"
-                  alt=""
-                  className="h-[34px] w-[34px]"
-                />
-              ))}
-            </div>
-            <span className="text-[22px] font-extrabold text-[#5a5a62]">+</span>
-            <div className="flex items-end gap-0.5">
-              {Array.from({ length: 2 }).map((_, i) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={i}
-                  src="/soda-cup.png"
-                  alt=""
-                  className="h-[38px] w-[30px] object-contain"
-                />
-              ))}
-            </div>
-            <span className="text-[13px] font-semibold text-[#9b9aa1]">
-              The highest rating Tim can give.{" "}
-              <strong className="font-bold text-[#f6f4ef]">
-                A perfect score.
-              </strong>
-            </span>
-          </div>
         </div>
 
         <NextUpSection items={items} />
@@ -359,10 +326,6 @@ export function Timeline({ items }: TimelineProps) {
           ) : null}
         </div>
 
-        <p className="text-sm text-[#8c8b92]">
-          Showing <strong className="text-[#cfcdd4]">{filtered.length}</strong>{" "}
-          of <strong className="text-[#cfcdd4]">{items.length}</strong> items
-        </p>
       </header>
 
       {yearGroups.length === 0 ? (
