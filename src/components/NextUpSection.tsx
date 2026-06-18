@@ -77,26 +77,26 @@ export function NextUpSection({ items }: NextUpSectionProps) {
 
   return (
     <section
-      className="rounded-2xl border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[color-mix(in_oklab,var(--foreground)_4%,transparent)] p-6 sm:p-8"
+      className="rounded-2xl border border-blue-600/20 bg-blue-600/5 p-5 dark:border-blue-400/20 dark:bg-blue-400/5 sm:p-6"
       aria-label="Next up"
     >
-      <h2 className="mb-4 text-lg font-semibold text-[var(--foreground)]">
-        Next up
-      </h2>
-      <div className="grid gap-6 sm:grid-cols-[7.5rem_1fr] sm:gap-8">
-        <div className="relative mx-auto flex w-full max-w-[7.5rem] shrink-0 justify-center sm:mx-0">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+        Up next
+      </p>
+      <div className="grid gap-5 sm:grid-cols-[10rem_1fr] sm:gap-6">
+        <div className="relative mx-auto flex w-full max-w-[10rem] shrink-0 justify-center sm:mx-0">
           {next.poster_url ? (
             <Link
               href={`/episode/${next.id}`}
-              className="block overflow-hidden rounded-lg bg-black/5 ring-1 ring-black/10 transition hover:ring-[color-mix(in_oklab,var(--foreground)_22%,transparent)] dark:bg-white/5 dark:ring-white/10"
+              className="block w-full overflow-hidden rounded-lg bg-black/5 ring-1 ring-black/10 transition hover:ring-[color-mix(in_oklab,var(--foreground)_22%,transparent)] dark:bg-white/5 dark:ring-white/10"
             >
               <Image
                 src={next.poster_url}
                 alt=""
-                width={120}
-                height={180}
+                width={160}
+                height={240}
                 className="aspect-[2/3] h-auto w-full object-cover"
-                sizes="120px"
+                sizes="160px"
                 unoptimized
               />
             </Link>
@@ -109,16 +109,7 @@ export function NextUpSection({ items }: NextUpSectionProps) {
             </Link>
           )}
         </div>
-        <div className="min-w-0 space-y-2 sm:justify-center sm:self-center">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-            <time
-              dateTime={next.air_date}
-              className="text-sm text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]"
-            >
-              {formatDisplayDate(next.air_date)}
-            </time>
-            <WatchedToggle itemId={next.id} watched={watched} />
-          </div>
+        <div className="min-w-0 space-y-2.5 sm:justify-center sm:self-center">
           <h3 className="text-xl font-semibold leading-snug tracking-tight text-balance sm:text-2xl">
             <Link
               href={`/episode/${next.id}`}
@@ -127,6 +118,20 @@ export function NextUpSection({ items }: NextUpSectionProps) {
               {title}
             </Link>
           </h3>
+          {badgeParts.length > 0 ? (
+            <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_58%,transparent)]">
+              {badgeParts.join(" · ")}
+            </p>
+          ) : null}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            <time
+              dateTime={next.air_date}
+              className="text-sm text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]"
+            >
+              {formatDisplayDate(next.air_date)}
+            </time>
+            <WatchedToggle itemId={next.id} watched={watched} />
+          </div>
           <p className="text-sm">
             <a
               href={next.url}
@@ -138,11 +143,6 @@ export function NextUpSection({ items }: NextUpSectionProps) {
               <ExternalIcon className="h-3.5 w-3.5 shrink-0 opacity-80" />
             </a>
           </p>
-          {badgeParts.length > 0 ? (
-            <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_58%,transparent)]">
-              {badgeParts.join(" · ")}
-            </p>
-          ) : null}
         </div>
       </div>
     </section>

@@ -32,10 +32,68 @@ function ExternalIcon({ className }: { className?: string }) {
   );
 }
 
+type CategoryAccent = {
+  borderColor: string;
+  chipClass: string;
+  label: string;
+};
+
+function getCategoryAccent(category: string | null): CategoryAccent {
+  switch (category) {
+    case "on-cinema-at-the-cinema":
+      return {
+        borderColor: "#f59e0b",
+        chipClass:
+          "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200",
+        label: "On Cinema",
+      };
+    case "oscar-specials":
+      return {
+        borderColor: "#f59e0b",
+        chipClass:
+          "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200",
+        label: "Oscar Special",
+      };
+    case "decker":
+      return {
+        borderColor: "#818cf8",
+        chipClass:
+          "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-200",
+        label: "Decker",
+      };
+    case "live":
+      return {
+        borderColor: "#f43f5e",
+        chipClass:
+          "bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-200",
+        label: "Live",
+      };
+    case "more":
+      return {
+        borderColor: "#34d399",
+        chipClass:
+          "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200",
+        label: "More",
+      };
+    default:
+      return {
+        borderColor: "color-mix(in oklab, var(--foreground) 20%, transparent)",
+        chipClass:
+          "bg-[color-mix(in_oklab,var(--foreground)_7%,transparent)] text-[color-mix(in_oklab,var(--foreground)_65%,transparent)]",
+        label: category
+          ? category
+              .split("-")
+              .filter(Boolean)
+              .map((w) => w[0].toUpperCase() + w.slice(1))
+              .join(" ")
+          : "HEI Network",
+      };
+  }
+}
+
 type TimelineItemRowProps = {
   item: TimelineItem;
   watched: boolean;
-  /** Present on the first visible row for this season (for in-page jump links). */
   scrollAnchorId?: string;
 };
 
@@ -46,24 +104,31 @@ export function TimelineItemRow({
 }: TimelineItemRowProps) {
   const badgeParts = episodeBadgeParts(item);
   const title = displayTitle(item);
+  const accent = getCategoryAccent(item.category);
+
+  // Badge parts without the category label (shown separately as a chip)
+  const metaParts = badgeParts.filter(
+    (p) => p !== accent.label && p !== "On Cinema At The Cinema",
+  );
 
   const article = (
     <article
-      className={`group relative grid gap-4 border-b border-[color-mix(in_oklab,var(--foreground)_8%,transparent)] py-8 sm:grid-cols-[7.5rem_1fr] sm:gap-8 ${watched ? "opacity-60" : ""}`}
+      style={{ borderLeftColor: accent.borderColor }}
+      className={`group relative grid gap-5 rounded-xl border border-l-[3px] border-[color-mix(in_oklab,var(--foreground)_10%,transparent)] bg-[color-mix(in_oklab,var(--foreground)_2%,transparent)] p-4 transition hover:border-[color-mix(in_oklab,var(--foreground)_16%,transparent)] hover:bg-[color-mix(in_oklab,var(--foreground)_4%,transparent)] sm:grid-cols-[10rem_1fr] sm:gap-6 sm:p-5 ${watched ? "opacity-55" : ""}`}
     >
-      <div className="relative mx-auto flex w-full max-w-[7.5rem] shrink-0 justify-center sm:mx-0">
+      <div className="relative mx-auto flex w-full max-w-[10rem] shrink-0 justify-center sm:mx-0">
         {item.poster_url ? (
           <Link
             href={`/episode/${item.id}`}
-            className="block overflow-hidden rounded-lg bg-black/5 ring-1 ring-black/10 transition duration-200 group-hover:ring-[color-mix(in_oklab,var(--foreground)_22%,transparent)] dark:bg-white/5 dark:ring-white/10"
+            className="block w-full overflow-hidden rounded-lg bg-black/5 ring-1 ring-black/10 transition duration-200 group-hover:ring-[color-mix(in_oklab,var(--foreground)_22%,transparent)] dark:bg-white/5 dark:ring-white/10"
           >
             <Image
               src={item.poster_url}
               alt=""
-              width={120}
-              height={180}
+              width={160}
+              height={240}
               className="aspect-[2/3] h-auto w-full object-cover"
-              sizes="120px"
+              sizes="160px"
               unoptimized
             />
           </Link>
@@ -76,15 +141,18 @@ export function TimelineItemRow({
           </Link>
         )}
       </div>
-      <div className="min-w-0 space-y-2">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-          <time
-            dateTime={item.air_date}
-            className="text-sm text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]"
+      <div className="min-w-0 space-y-2.5">
+        <div className="flex flex-wrap items-center gap-2">
+          <span
+            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide ${accent.chipClass}`}
           >
-            {formatDisplayDate(item.air_date)}
-          </time>
-          <WatchedToggle itemId={item.id} watched={watched} />
+            {accent.label}
+          </span>
+          {item.is_live ? (
+            <span className="inline-flex items-center rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-semibold tracking-wide text-rose-800 dark:bg-rose-900/40 dark:text-rose-200">
+              LIVE
+            </span>
+          ) : null}
         </div>
         <h3 className="text-xl font-semibold leading-snug tracking-tight text-balance sm:text-2xl">
           <Link
@@ -94,6 +162,20 @@ export function TimelineItemRow({
             {title}
           </Link>
         </h3>
+        {metaParts.length > 0 ? (
+          <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_58%,transparent)]">
+            {metaParts.join(" · ")}
+          </p>
+        ) : null}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <time
+            dateTime={item.air_date}
+            className="text-sm text-[color-mix(in_oklab,var(--foreground)_50%,transparent)]"
+          >
+            {formatDisplayDate(item.air_date)}
+          </time>
+          <WatchedToggle itemId={item.id} watched={watched} />
+        </div>
         <p className="text-sm">
           <a
             href={item.url}
@@ -105,11 +187,6 @@ export function TimelineItemRow({
             <ExternalIcon className="h-3.5 w-3.5 shrink-0 opacity-80" />
           </a>
         </p>
-        {badgeParts.length > 0 ? (
-          <p className="text-sm text-[color-mix(in_oklab,var(--foreground)_58%,transparent)]">
-            {badgeParts.join(" · ")}
-          </p>
-        ) : null}
       </div>
     </article>
   );
