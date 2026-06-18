@@ -77,33 +77,33 @@ export function NextUpSection({ items }: NextUpSectionProps) {
 
   return (
     <section
-      className="rounded-2xl border border-blue-600/20 bg-blue-600/5 p-5 dark:border-blue-400/20 dark:bg-blue-400/5 sm:p-6"
+      className="rounded-xl border border-blue-600/20 bg-blue-600/5 p-4 dark:border-blue-400/20 dark:bg-blue-400/5 sm:p-5"
       aria-label="Next up"
     >
       <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
         Up next
       </p>
-      <div className="grid gap-5 sm:grid-cols-[10rem_1fr] sm:gap-6">
-        <div className="relative mx-auto flex w-full max-w-[10rem] shrink-0 justify-center sm:mx-0">
+      <div className="grid gap-4 sm:grid-cols-[5rem_1fr] sm:gap-5">
+        <div className="relative mx-auto flex w-full max-w-[5rem] shrink-0 justify-center sm:mx-0">
           {next.poster_url ? (
             <Link
               href={`/episode/${next.id}`}
-              className="block w-full overflow-hidden rounded-lg bg-black/5 ring-1 ring-black/10 transition hover:ring-[color-mix(in_oklab,var(--foreground)_22%,transparent)] dark:bg-white/5 dark:ring-white/10"
+              className="block w-full overflow-hidden rounded-md bg-black/5 ring-1 ring-black/10 transition hover:ring-[color-mix(in_oklab,var(--foreground)_22%,transparent)] dark:bg-white/5 dark:ring-white/10"
             >
               <Image
                 src={next.poster_url}
                 alt=""
-                width={160}
-                height={240}
+                width={80}
+                height={120}
                 className="aspect-[2/3] h-auto w-full object-cover"
-                sizes="160px"
+                sizes="80px"
                 unoptimized
               />
             </Link>
           ) : (
             <Link
               href={`/episode/${next.id}`}
-              className="flex aspect-[2/3] w-full items-center justify-center rounded-lg bg-[color-mix(in_oklab,var(--foreground)_6%,transparent)] text-xs text-[color-mix(in_oklab,var(--foreground)_45%,transparent)] transition"
+              className="flex aspect-[2/3] w-full items-center justify-center rounded-md bg-[color-mix(in_oklab,var(--foreground)_6%,transparent)] text-xs text-[color-mix(in_oklab,var(--foreground)_45%,transparent)] transition"
             >
               No art
             </Link>
