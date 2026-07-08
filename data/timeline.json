@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-07T10:02:52.771992+00:00",
+  "generated_at": "2026-07-08T08:46:18.204885+00:00",
   "items": [
     {
       "id": 793117,
@@ -13,7 +13,7 @@
       "season_number": null,
       "is_live": false,
       "is_coming_soon": false,
-      "length": null,
+      "length": "819",
       "youtube_url": null
     },
     {
@@ -28,7 +28,7 @@
       "season_number": null,
       "is_live": false,
       "is_coming_soon": false,
-      "length": "1322",
+      "length": "0",
       "youtube_url": null
     },
     {
