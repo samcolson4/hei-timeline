@@ -1,6 +1,21 @@
 {
-  "generated_at": "2026-10-20T11:44:28.786021+00:00",
+  "generated_at": "2026-10-21T11:56:29.302386+00:00",
   "items": [
+    {
+      "id": 830982,
+      "title": "1701 'Clayface', 'Wildwood', and 'The Odyssey'",
+      "slug": "clayface-wildwood-and-the-odyssey",
+      "url": "https://www.heinetwork.tv/on-cinema-at-the-cinema/season-17/clayface-wildwood-and-the-odyssey/",
+      "air_date": "2026-10-21",
+      "poster_url": "https://www.heinetwork.tv/wp-content/uploads/2026/10/1701-thumbnail-scaled.png",
+      "category": "on-cinema-at-the-cinema",
+      "season_name": null,
+      "season_number": null,
+      "is_live": false,
+      "is_coming_soon": false,
+      "length": "14:55",
+      "youtube_url": null
+    },
     {
       "id": 793117,
       "title": "The Road To Phoenix Episode 05",
