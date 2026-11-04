@@ -1,6 +1,21 @@
 {
-  "generated_at": "2026-11-03T14:22:54.670262+00:00",
+  "generated_at": "2026-11-04T14:38:40.391445+00:00",
   "items": [
+    {
+      "id": 838819,
+      "title": "1703 \u2018The Cat in the Hat\u2019 and \u2018Wild Horse Nine\u2019",
+      "slug": "the-cat-in-the-hat-and-wild-horse-nine",
+      "url": "https://www.heinetwork.tv/on-cinema-at-the-cinema/season-17/the-cat-in-the-hat-and-wild-horse-nine/",
+      "air_date": "2026-11-04",
+      "poster_url": "https://www.heinetwork.tv/wp-content/uploads/2026/11/1703-hero.png",
+      "category": "on-cinema-at-the-cinema",
+      "season_name": null,
+      "season_number": null,
+      "is_live": false,
+      "is_coming_soon": false,
+      "length": "20:01",
+      "youtube_url": null
+    },
     {
       "id": 835543,
       "title": "1702 \u2018Christmas at the Kringles\u2019 and \u2018The Mongoose\u2019",
