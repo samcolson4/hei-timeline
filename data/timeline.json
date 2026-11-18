@@ -1,6 +1,21 @@
 {
-  "generated_at": "2026-11-17T16:06:38.691091+00:00",
+  "generated_at": "2026-11-18T15:44:54.255779+00:00",
   "items": [
+    {
+      "id": 845367,
+      "title": "1705 \u2018I Play Rocky\u2019 and \u2018The Hunger Games: Sunrise on the Reaping\u2019",
+      "slug": "i-play-rocky-and-the-hunger-games-sunrise-on-the-reaping",
+      "url": "https://www.heinetwork.tv/on-cinema-at-the-cinema/season-17/i-play-rocky-and-the-hunger-games-sunrise-on-the-reaping/",
+      "air_date": "2026-11-18",
+      "poster_url": "https://www.heinetwork.tv/wp-content/uploads/2026/11/1705-hero-scaled.webp",
+      "category": "on-cinema-at-the-cinema",
+      "season_name": null,
+      "season_number": null,
+      "is_live": false,
+      "is_coming_soon": false,
+      "length": "21:13",
+      "youtube_url": null
+    },
     {
       "id": 842345,
       "title": "1704 \u2018Ghost Soldier\u2019 and \u2018Ebenezer\u2019",
