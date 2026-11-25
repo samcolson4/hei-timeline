@@ -1,6 +1,21 @@
 {
-  "generated_at": "2026-11-24T17:51:45.518282+00:00",
+  "generated_at": "2026-11-25T17:18:34.375470+00:00",
   "items": [
+    {
+      "id": 848879,
+      "title": "1706 \u2018Focker-In-Law\u2019 and \u2018Hershey\u2019",
+      "slug": "focker-in-law-and-hershey",
+      "url": "https://www.heinetwork.tv/on-cinema-at-the-cinema/season-17/focker-in-law-and-hershey/",
+      "air_date": "2026-11-25",
+      "poster_url": "https://www.heinetwork.tv/wp-content/uploads/2026/11/1706-hero.webp",
+      "category": "on-cinema-at-the-cinema",
+      "season_name": null,
+      "season_number": null,
+      "is_live": false,
+      "is_coming_soon": false,
+      "length": null,
+      "youtube_url": null
+    },
     {
       "id": 845367,
       "title": "1705 \u2018I Play Rocky\u2019 and \u2018The Hunger Games: Sunrise on the Reaping\u2019",
